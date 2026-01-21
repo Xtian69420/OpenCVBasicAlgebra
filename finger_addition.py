@@ -10,7 +10,6 @@ hands = mp_hands.Hands(
 )
 mp_draw = mp.solutions.drawing_utils
 
-# Load easter egg image
 eastern_egg_image = cv2.imread('sixseven.png')
 
 cap = cv2.VideoCapture(0)
@@ -31,7 +30,7 @@ while True:
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     result = hands.process(rgb)
-    finger_counts = []  # List to store counts from each hand
+    finger_counts = []  
 
     if result.multi_hand_landmarks:
         for hand_landmarks in result.multi_hand_landmarks:
@@ -49,8 +48,6 @@ while True:
             mp_draw.draw_landmarks(
                 frame, hand_landmarks, mp_hands.HAND_CONNECTIONS
             )
-
-    # ---------------- UI TEXT ---------------- #
 
     cv2.putText(
         frame,
@@ -73,7 +70,7 @@ while True:
     else:
         result = values[0] + values[1]
         display_text = f"{values[0]} + {values[1]} = {result}"
-        # Check for easter egg (6 + 7)
+
         if values[0] == 6 and values[1] == 7:
             is_easter_egg = True
 
@@ -87,15 +84,12 @@ while True:
         3
     )
 
-    # Display easter egg image if condition is met
     if is_easter_egg and eastern_egg_image is not None:
         img_h, img_w = eastern_egg_image.shape[:2]
-        # Resize image to fit in frame
         max_img_w, max_img_h = 300, 300
         scale = min(max_img_w / img_w, max_img_h / img_h)
         new_w, new_h = int(img_w * scale), int(img_h * scale)
         resized_img = cv2.resize(eastern_egg_image, (new_w, new_h))
-        # Place at bottom center
         x_offset = (w - new_w) // 2
         y_offset = h - new_h - 20
         frame[y_offset:y_offset+new_h, x_offset:x_offset+new_w] = resized_img
