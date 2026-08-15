@@ -11,7 +11,6 @@ hands = mp_hands.Hands(
 mp_draw = mp.solutions.drawing_utils
 
 eastern_egg_image = cv2.imread('sixseven.png')
-
 cap = cv2.VideoCapture(0)
 
 finger_tips = [4, 8, 12, 16, 20]
@@ -104,6 +103,11 @@ while True:
         2
     )
 
+    # if capture_start_time is None:
+    #     elapsed = time.time() - capture_start_time
+    #     remaining = max(0, capture_delay - elapsed)
+    #     countdown = int(remaining) - 1
+    
     total_fingers = sum(finger_counts)
 
     if capture_start_time is not None:
@@ -150,9 +154,15 @@ while True:
     if key == ord('y') or key == ord('Y'):
         values = []
         capture_start_time = None
-
+    
     if key == ord('q'):
         break
+    
+    # if capture_start_time is not None and len(values) < 2:
+    #     elapsed = time.time() - capture_start_time
+    #     if elapsed >= capture_delay:
+    #         values.append(total_fingers)
+    #         capture_start_time = None
 
 cap.release()
 cv2.destroyAllWindows()
